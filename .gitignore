@@ -115,3 +115,5 @@ secrets.tfvars
 # CLI configuration files
 .terraformrc
 terraform.rc
+terraform/complete_cleanup.sh
+helm-values/kube-prom-stack.yml

@@ -33,4 +33,10 @@ variable "cluster_endpoint_public_access_cidrs" {
 variable "admin_principal_arn" {
   description = "IAM principal ARN (user or role) to grant EKS cluster admin access via access_entries."
   type        = string
+  default     = null
+
+  validation {
+    condition     = var.admin_principal_arn == null || can(regex("^arn:aws:iam::[0-9]{12}:(user|role)/[-A-Za-z0-9+=,.@_/]+$", var.admin_principal_arn))
+    error_message = "admin_principal_arn must be a valid IAM user or role ARN, e.g., arn:aws:iam::<account-id>:role/RoleName."
+  }
 }

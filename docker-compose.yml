@@ -55,8 +55,6 @@ services:
         - REDIS_URI=redis://redis:6379
         - NEXTAUTH_URL=https://easyshop-hack.shaheen.homes
         - NEXT_PUBLIC_API_URL=https://easyshop-hack.shaheen.homes/api
-        - NEXTAUTH_URL=https://easyshop.shaheen.homes
-        - NEXT_PUBLIC_API_URL=https://easyshop.shaheen.homes/api
         - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
         - JWT_SECRET=${JWT_SECRET}
         - NODE_ENV=production

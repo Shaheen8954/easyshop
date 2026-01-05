@@ -39,34 +39,37 @@ module "eks" {
  
  //access entry for any specific user or role (jenkins controller instance)
  
-  access_entries = {
-    # One access entry with a policy associated
-    example = {
-      principal_arn = aws_iam_role.jenkins_role.arn
-      
-      policy_associations = {
-        example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = {
-            type = "cluster"
+  access_entries = merge(
+    {
+      # One access entry with a policy associated
+      example = {
+        principal_arn = aws_iam_role.jenkins_role.arn
+
+        policy_associations = {
+          example = {
+            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+            access_scope = {
+              type = "cluster"
+            }
+          }
+        }
+      }
+    },
+    var.admin_principal_arn == null ? {} : {
+      admin = {
+        principal_arn = var.admin_principal_arn
+
+        policy_associations = {
+          admin = {
+            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+            access_scope = {
+              type = "cluster"
+            }
           }
         }
       }
     }
-
-    admin = {
-      principal_arn = var.admin_principal_arn
-
-      policy_associations = {
-        admin = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = {
-            type = "cluster"
-          }
-        }
-      }
-    }
-  }
+  )
 
 
   cluster_security_group_additional_rules = {
@@ -137,8 +140,8 @@ module "eks" {
 
     easyshop-demo-ng = {
       min_size     = 1
-      max_size     = 2
-      desired_size = 1
+      max_size     = 5
+      desired_size = 4
 
 
       instance_types = ["t3.micro"]
